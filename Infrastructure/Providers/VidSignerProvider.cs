@@ -279,6 +279,32 @@ namespace VidSigner.Infrastructure.VidSignerProvider
 
         #endregion SendBatchToSignAsync
 
+        #region DownloadDocumentAsync
+
+        public async Task<string?> GetSignedDocumentInfoAsync(Guid documentId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", ApiCredentials);
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            var url = $"https://pre-vidsignercloud.validatedid.com/api/v2.2/signeddocuments/{documentId}";
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+                using var json = await JsonDocument.ParseAsync(stream);
+
+                if (json.RootElement.TryGetProperty("DocContent", out var DocContent))
+                {
+                    return DocContent.GetString();
+                }
+            }
+            return null;
+        }
+        #endregion DownloadDocumentAsync
+
         #endregion Public Methods
 
         #region Private Methods
@@ -293,11 +319,19 @@ namespace VidSigner.Infrastructure.VidSignerProvider
                 OrderedSignatures = true,
                 ExpirationDate = DateTime.Now.AddDays(1).ToString(),
                 NotificationURL = "https://webhook.site/307f3f81-a03b-4496-b717-fbe2cd9c0d63",
-                RejectedDocumentRecipients = new List<RejectedDocumentRecipient> // Only send email notification
+                RejectedDocumentRecipients = new List<DocumentRecipient> // Only send email notification
                     {
-                        new RejectedDocumentRecipient
+                        new DocumentRecipient
                         {
-                            eMail = "dmesquita@cegid.com",
+                            eMail = "empeixoto@cegid.com",
+                            Language = "es"
+                        }
+                    },
+                SignedDocumentRecipients = new List<DocumentRecipient>
+                    {
+                        new DocumentRecipient
+                        {
+                            eMail = "empeixoto@cegid.com",
                             Language = "es"
                         }
                     },
@@ -306,12 +340,12 @@ namespace VidSigner.Infrastructure.VidSignerProvider
                         new Signer
                         {
                             SignatureType = "emailandsms",
-                            LocalSignature = "mandatory", // "mandatory" property define that signature is made from local machine software
+                            //LocalSignature = "mandatory", // "mandatory" property define that signature is made from local machine software
                             SignerName = "DiogoRocha",
                             TypeOfID = "DNI",
                             NumberID = "A00000000",
                             Language = "es",
-                            PhoneNumber = "+351915544774",
+                            PhoneNumber = "+351918845267",
                             Email = "empeixoto@cegid.com",
                             Visible = new Visible
                             {

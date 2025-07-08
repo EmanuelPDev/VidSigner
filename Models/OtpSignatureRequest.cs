@@ -17,7 +17,9 @@ namespace VidSigner.Models
         public string NotificationURL { get; set; }
         public string ExpirationDate { get; set; }
 
-        public List<RejectedDocumentRecipient> RejectedDocumentRecipients { get; set; }
+        public List<DocumentRecipient> RejectedDocumentRecipients { get; set; }
+        public List<DocumentRecipient> SignedDocumentRecipients { get; set; }
+
     }
 
     public class Signer
@@ -51,7 +53,7 @@ namespace VidSigner.Models
         public string eMailSubject { get; set; }
     }
 
-    public class RejectedDocumentRecipient
+    public class DocumentRecipient
     {
         public string eMail { get; set; }
         public string Language { get; set; }

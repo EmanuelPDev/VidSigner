@@ -23,16 +23,16 @@ var VidSignerProvider = new VidSignerProvider(httpClient);
 #region DocumentOtpSignature
 
 
-OtpSignatureResponse DocumentOtpSignatureResult = await VidSignerProvider.RequestDocumentOtpSignatureAsync();
+//OtpSignatureResponse DocumentOtpSignatureResult = await VidSignerProvider.RequestDocumentOtpSignatureAsync();
 
-if (DocumentOtpSignatureResult != null)
-{
-    Console.WriteLine($"Otp document signature created. Document id: {DocumentOtpSignatureResult.DocGUI}");
-}
-else
-{
-    Console.WriteLine("Error creting otp document signature.");
-}
+//if (DocumentOtpSignatureResult != null)
+//{
+//    Console.WriteLine($"Otp document signature created. Document id: {DocumentOtpSignatureResult.DocGUI}");
+//}
+//else
+//{
+//    Console.WriteLine("Error creting otp document signature.");
+//}
 
 #endregion DocumentOtpSignature
 
@@ -118,4 +118,14 @@ else
 //    Console.WriteLine("Error creting batch document.");
 //}
 #endregion CreateDocumentBatch
+#region DownloadDocumentAsync
+
+
+string? signedDocBase64 = await VidSignerProvider.GetSignedDocumentInfoAsync(Guid.Parse("dcdbcc85-9c7d-4b58-ab63-88a6336d5afe"));
+
+if (!string.IsNullOrEmpty(signedDocBase64))
+{
+    Console.WriteLine($"Documento: {signedDocBase64} | Estado: {signedDocBase64}");
+}
+#endregion DownloadDocumentAsync
 
