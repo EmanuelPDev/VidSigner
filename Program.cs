@@ -118,6 +118,7 @@ var VidSignerProvider = new VidSignerProvider(httpClient);
 //    Console.WriteLine("Error creting batch document.");
 //}
 #endregion CreateDocumentBatch
+
 #region DownloadDocumentAsync
 
 

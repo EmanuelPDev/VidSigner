@@ -73,8 +73,7 @@ namespace VidSigner.Infrastructure.VidSignerProvider
         public async Task<OtpSignatureResponse?> RequestDocumentOtpSignatureAsync()
         {
             OtpSignatureRequest request = this.CreateOtpLocalSignatureRequest();
-            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{SubscriptionUser}:{SubscriptionPassword}"));
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", ApiCredentials);
 
             var response = await _httpClient.PostAsJsonAsync(OtpSignatureUrl, request);
 
@@ -96,8 +95,7 @@ namespace VidSigner.Infrastructure.VidSignerProvider
 
         public async Task<string?> GetDocumentReportAsync(Guid documentId, string language = "es")
         {
-            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{SubscriptionUser}:{SubscriptionPassword}"));
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", ApiCredentials);
 
             var url = $"https://pre-vidsignercloud.validatedid.com/api/signeddocuments/{documentId}/report/{language}";
 
@@ -113,8 +111,7 @@ namespace VidSigner.Infrastructure.VidSignerProvider
         #region GetDocument
         public async Task<string?> GetDocumentInfoAsync(Guid documentId)
         {
-            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{SubscriptionUser}:{SubscriptionPassword}"));
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", ApiCredentials);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
